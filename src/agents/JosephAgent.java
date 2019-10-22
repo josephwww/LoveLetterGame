@@ -10,22 +10,43 @@ public class JosephAgent implements Agent{
     private int myIndex;
     private Map<Integer,Card> known = new HashMap<Integer,Card>();
 
+    /*
+    Constructor
+    */
+    
     public JosephAgent(){
         rand  = new Random();
     }
 
+    /**
+      * Reports the agents name
+      * */
     public String toString(){return "Joseph";}
 
+
+    /**
+    * Method called at the start of a round
+    * @param start the initial state of the round
+    **/
     public void newRound(State start) {
         current = start;
         myIndex = current.getPlayerIndex();
         known.clear();
     }
-
+    /**
+    * Method called when any agent performs an action. 
+    * @param act the action an agent performs
+    * @param results the state of play the agent is able to observe.
+     * **/
     public void see(Action act, State results) {
         current = results;
     }
-
+    /**
+   * Perform an action after drawing a card from the deck
+   * @param c the card drawn from the deck
+   * @return the action the agent chooses to perform
+   * @throws IllegalActionException when the Action produced is not legal.
+   * */
     public Action playCard(Card c) {
         Action act = null;
 
@@ -62,15 +83,15 @@ public class JosephAgent implements Agent{
             targetList.add(i);
         }
         switch(targetList.size()) {
-            case 1:
+            case 1://one player in the list, do nothing
                 break;
-            case 2:
+            case 2:// two player in the list
                 if (current.score(targetList.get(0)) < current.score(targetList.get(1)))
                     Collections.swap(targetList, 0, 1);
                 if (current.handmaid(targetList.get(0)))
                     Collections.swap(targetList, 0, 1);
                 break;
-            case 3:
+            case 3://three player in the list
                 if (current.score(targetList.get(0)) < current.score(targetList.get(1)))
                     Collections.swap(targetList, 0, 1);
                 if (current.score(targetList.get(0)) < current.score(targetList.get(2)))
@@ -85,7 +106,7 @@ public class JosephAgent implements Agent{
                 }
                 break;
         }
-
+        //
         Card[] unseen = current.unseenCards();
         List<Card> ch = new ArrayList<Card>();
         ch.addAll(Arrays.asList(unseen));
@@ -131,7 +152,7 @@ public class JosephAgent implements Agent{
                     act = Action.playHandmaid(myIndex);
                     break;
                 case PRINCE:
-                    if(allProtected) target=myIndex;
+                    if(allProtected) target=myIndex;//all protected, play toward myself
                     act = Action.playPrince(myIndex, target);
                     break;
                 case KING:
