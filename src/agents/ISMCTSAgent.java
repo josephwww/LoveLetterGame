@@ -7,6 +7,11 @@ import loveletter.Card;
 import loveletter.IllegalActionException;
 import loveletter.State;
 
+/**
+ * Author:Hongfeng Wang 22289267
+ *        Haoran Zhang  22289211
+ * The ISMCTS agent
+ */
 public class ISMCTSAgent implements Agent{
 	
 	private Random rand;
